@@ -99,6 +99,34 @@ For Development:
 }
 ```
 
+## 🐳 Docker Volume Mounting Issue & Solution
+
+**Important Note for Docker Users**: The Docker MCP Toolkit doesn't implement volume mounting yet, which means downloaded papers inside containers aren't accessible on your host machine.
+
+**Solution**: We provide utility scripts in the [`scripts/`](scripts/) directory that solve this limitation by downloading PDFs directly to your local filesystem using the URLs returned by the MCP server.
+
+### Quick Fix for Docker Users
+
+1. **Download paper via MCP** (returns content + PDF URL):
+   ```bash
+   # This works but files aren't accessible on host
+   mcp download-paper 2507.06000v1
+   ```
+
+2. **Use our utility script** to get the PDF locally:
+   ```bash
+   # Copy the pdf_uri from the MCP response
+   python scripts/download_pdf.py https://arxiv.org/pdf/2507.06000v1.pdf
+   ```
+
+**See [`scripts/README.md`](scripts/README.md)** for complete documentation on:
+- Configuration options
+- Environment variables
+- Batch operations
+- Troubleshooting
+
+This workaround ensures you get both the paper content (via MCP) and the PDF files (on your local filesystem) until volume mounting is implemented.
+
 ## 💡 Available Tools
 
 The server provides four main tools:
