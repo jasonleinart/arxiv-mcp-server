@@ -104,6 +104,7 @@ async def handle_download(arguments: Dict[str, Any]) -> List[types.TextContent]:
                                     "status": "success",
                                     "message": "Paper is ready",
                                     "resource_uri": f"file://{get_paper_path(paper_id, '.md')}",
+                                    "pdf_uri": f"https://arxiv.org/pdf/{paper_id}.pdf",
                                 }
                             ),
                         )
@@ -153,6 +154,7 @@ async def handle_download(arguments: Dict[str, Any]) -> List[types.TextContent]:
                             "status": "success",
                             "message": "Paper already available",
                             "resource_uri": f"file://{get_paper_path(paper_id, '.md')}",
+                            "pdf_uri": f"https://arxiv.org/pdf/{paper_id}.pdf",
                             "content": content,
                         }
                     ),
@@ -210,6 +212,7 @@ async def handle_download(arguments: Dict[str, Any]) -> List[types.TextContent]:
                             "status": "success",
                             "message": "Paper downloaded and converted successfully",
                             "resource_uri": f"file://{get_paper_path(paper_id, '.md')}",
+                            "pdf_uri": f"https://arxiv.org/pdf/{paper_id}.pdf",
                             "content": content,
                             "started_at": status.started_at.isoformat(),
                             "completed_at": status.completed_at.isoformat(),
