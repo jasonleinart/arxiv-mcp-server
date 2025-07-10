@@ -27,10 +27,16 @@ FROM python:3.11-slim-bookworm
 WORKDIR /app
 
 # Copy the installed dependencies and the virtual environment
-COPY --from=uv --chown=app:app /app/.venv /app/.venv
+COPY --from=uv /app/.venv /app/.venv
+
+# Copy the source code to the final stage
+COPY --from=uv /app/src /app/src
 
 # Set the PATH to include the virtual environment
 ENV PATH="/app/.venv/bin:$PATH"
+
+# Configure logging to show output
+ENV PYTHONUNBUFFERED=1
 
 # Set the default entrypoint
 ENTRYPOINT ["python", "-m", "arxiv_mcp_server"]

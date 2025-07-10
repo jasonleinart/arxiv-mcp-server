@@ -1,6 +1,7 @@
 """Configuration settings for the arXiv MCP server."""
 
 import sys
+import os
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
 import logging
@@ -27,12 +28,21 @@ class Settings(BaseSettings):
         Returns:
             Path: The absolute storage path.
         """
-        path = (
-            self._get_storage_path_from_args()
-            or Path.home() / ".arxiv-mcp-server" / "papers"
-        )
+        # Check if we're running in a Docker container and /app/papers exists
+        # This ensures the bind mount works correctly
+        docker_path = Path("/app/papers")
+        if docker_path.exists() or os.path.exists("/app"):
+            path = docker_path
+        else:
+            # Use command line argument or default
+            path = (
+                self._get_storage_path_from_args()
+                or Path.home() / ".arxiv-mcp-server" / "papers"
+            )
+        
         path = path.resolve()
         path.mkdir(parents=True, exist_ok=True)
+        logger.info(f"Using storage path: {path}")
         return path
 
     def _get_storage_path_from_args(self) -> Path | None:
