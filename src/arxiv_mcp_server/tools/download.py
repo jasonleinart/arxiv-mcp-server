@@ -187,23 +187,39 @@ async def handle_download(arguments: Dict[str, Any]) -> List[types.TextContent]:
         status = conversion_statuses[paper_id]
         status.status = "converting"
 
-        # Start conversion in thread
-        asyncio.create_task(
-            asyncio.to_thread(convert_pdf_to_markdown, paper_id, pdf_path)
-        )
-
-        return [
-            types.TextContent(
-                type="text",
-                text=json.dumps(
-                    {
-                        "status": "converting",
-                        "message": "Paper downloaded, conversion started",
-                        "started_at": status.started_at.isoformat(),
-                    }
-                ),
-            )
-        ]
+        # Convert PDF to markdown and wait for completion
+        await asyncio.to_thread(convert_pdf_to_markdown, paper_id, pdf_path)
+        
+        # Check if conversion was successful
+        status = conversion_statuses[paper_id]
+        if status.status == "success":
+            return [
+                types.TextContent(
+                    type="text",
+                    text=json.dumps(
+                        {
+                            "status": "success",
+                            "message": "Paper downloaded and converted successfully",
+                            "resource_uri": f"file://{get_paper_path(paper_id, '.md')}",
+                            "started_at": status.started_at.isoformat(),
+                            "completed_at": status.completed_at.isoformat(),
+                        }
+                    ),
+                )
+            ]
+        else:
+            return [
+                types.TextContent(
+                    type="text",
+                    text=json.dumps(
+                        {
+                            "status": "error",
+                            "message": f"Conversion failed: {status.error}",
+                            "started_at": status.started_at.isoformat(),
+                        }
+                    ),
+                )
+            ]
 
     except StopIteration:
         return [
