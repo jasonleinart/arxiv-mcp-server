@@ -141,6 +141,10 @@ async def handle_download(arguments: Dict[str, Any]) -> List[types.TextContent]:
 
         # Check if paper is already converted
         if get_paper_path(paper_id, ".md").exists():
+            # Read the existing content to return it directly
+            md_path = get_paper_path(paper_id, ".md")
+            content = md_path.read_text(encoding="utf-8")
+            
             return [
                 types.TextContent(
                     type="text",
@@ -149,6 +153,7 @@ async def handle_download(arguments: Dict[str, Any]) -> List[types.TextContent]:
                             "status": "success",
                             "message": "Paper already available",
                             "resource_uri": f"file://{get_paper_path(paper_id, '.md')}",
+                            "content": content,
                         }
                     ),
                 )
@@ -193,6 +198,10 @@ async def handle_download(arguments: Dict[str, Any]) -> List[types.TextContent]:
         # Check if conversion was successful
         status = conversion_statuses[paper_id]
         if status.status == "success":
+            # Read the converted content to return it directly
+            md_path = get_paper_path(paper_id, ".md")
+            content = md_path.read_text(encoding="utf-8")
+            
             return [
                 types.TextContent(
                     type="text",
@@ -201,6 +210,7 @@ async def handle_download(arguments: Dict[str, Any]) -> List[types.TextContent]:
                             "status": "success",
                             "message": "Paper downloaded and converted successfully",
                             "resource_uri": f"file://{get_paper_path(paper_id, '.md')}",
+                            "content": content,
                             "started_at": status.started_at.isoformat(),
                             "completed_at": status.completed_at.isoformat(),
                         }
