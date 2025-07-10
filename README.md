@@ -14,7 +14,7 @@
 > 🐳 **NEW**: Includes Docker MCP Toolkit compatibility solutions and utility scripts
 
 **This enhanced fork includes**:
-- ✅ [Docker MCP Registry contribution](https://github.com/docker/mcp-registry/pull/66) - now available to 100,000+ developers
+- 🔄 [Docker MCP Registry contribution](https://github.com/docker/mcp-registry/pull/66) - under review
 - ✅ Docker volume mounting limitation solutions
 - ✅ Utility scripts for local PDF downloads  
 - ✅ Comprehensive Docker compatibility guides
@@ -22,18 +22,18 @@
 
 ---
 
-## 🎯 Docker MCP Registry Achievement
+## 🎯 Docker MCP Registry Contribution
 
-**Status**: ✅ **Successfully merged** into [Docker's official MCP Registry](https://github.com/docker/mcp-registry/pull/66)
+**Status**: 🔄 **Under review** - [Pull Request #66](https://github.com/docker/mcp-registry/pull/66)
 
-This fork was specifically enhanced to contribute the ArXiv MCP Server to Docker's official registry, making academic research tools accessible through Docker Desktop MCP Toolkit. The contribution included:
+This fork was specifically enhanced to contribute the ArXiv MCP Server to Docker's official registry, making academic research tools accessible through Docker Desktop MCP Toolkit. The contribution includes:
 
-- **Production Docker deployment** ready for 100,000+ developers
+- **Production Docker deployment** ready for widespread adoption
 - **Volume mounting workarounds** solving fundamental Docker MCP Toolkit limitations  
 - **Universal utility scripts** benefiting the entire MCP community
 - **Professional documentation** and comprehensive user guides
 
-**Impact**: ArXiv MCP Server is now available to researchers, academics, and AI developers worldwide through Docker's official registry.
+**Potential Impact**: Upon approval, ArXiv MCP Server will be available to researchers, academics, and AI developers worldwide through Docker's official registry.
 
 ---
 
