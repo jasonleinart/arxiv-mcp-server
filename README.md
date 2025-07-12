@@ -14,7 +14,7 @@
 > 🐳 **NEW**: Includes Docker MCP Toolkit compatibility solutions and utility scripts
 
 **This enhanced fork includes**:
-- 🔄 [Docker MCP Registry contribution](https://github.com/docker/mcp-registry/pull/66) - under review
+- ✅ [Docker MCP Registry contribution](https://github.com/docker/mcp-registry/pull/66) - **MERGED** 🎉
 - ✅ Docker volume mounting limitation solutions
 - ✅ Utility scripts for local PDF downloads  
 - ✅ Comprehensive Docker compatibility guides
@@ -24,7 +24,7 @@
 
 ## 🎯 Docker MCP Registry Contribution
 
-**Status**: 🔄 **Under review** - [Pull Request #66](https://github.com/docker/mcp-registry/pull/66)
+**Status**: ✅ **MERGED** - [Pull Request #66](https://github.com/docker/mcp-registry/pull/66) 🎉
 
 This fork was specifically enhanced to contribute the ArXiv MCP Server to Docker's official registry, making academic research tools accessible through Docker Desktop MCP Toolkit. The contribution includes:
 
@@ -33,7 +33,7 @@ This fork was specifically enhanced to contribute the ArXiv MCP Server to Docker
 - **Universal utility scripts** benefiting the entire MCP community
 - **Professional documentation** and comprehensive user guides
 
-**Potential Impact**: Upon approval, ArXiv MCP Server will be available to researchers, academics, and AI developers worldwide through Docker's official registry.
+**Impact**: ArXiv MCP Server is now available to researchers, academics, and AI developers worldwide through Docker's official registry!
 
 ---
 
@@ -43,7 +43,7 @@ The ArXiv MCP Server provides a bridge between AI assistants and arXiv's researc
   
 🤝 **[Contribute](https://github.com/blazickjp/arxiv-mcp-server/blob/main/CONTRIBUTING.md)** • 
 📝 **[Report Bug](https://github.com/blazickjp/arxiv-mcp-server/issues)** •
-🐳 **[Docker Registry](https://github.com/docker/mcp-registry/pull/66)**
+🐳 **[Docker Registry](https://github.com/docker/mcp-registry/pull/66)** ✅
 
 <a href="https://www.pulsemcp.com/servers/blazickjp-arxiv-mcp-server"><img src="https://www.pulsemcp.com/badge/top-pick/blazickjp-arxiv-mcp-server" width="400" alt="Pulse MCP Badge"></a>
 </div>
@@ -102,9 +102,11 @@ Add this configuration to your MCP client config file:
             "args": [
                 "tool",
                 "run",
-                "arxiv-mcp-server",
-                "--storage-path", "/path/to/paper/storage"
-            ]
+                "arxiv-mcp-server"
+            ],
+            "env": {
+                "ARXIV_STORAGE_PATH": "/path/to/paper/storage"
+            }
         }
     }
 }
@@ -121,9 +123,11 @@ For Development:
                 "--directory",
                 "path/to/cloned/arxiv-mcp-server",
                 "run",
-                "arxiv-mcp-server",
-                "--storage-path", "/path/to/paper/storage"
-            ]
+                "arxiv-mcp-server"
+            ],
+            "env": {
+                "ARXIV_STORAGE_PATH": "/path/to/paper/storage"
+            }
         }
     }
 }
