@@ -15,9 +15,9 @@
 
 **This enhanced fork includes**:
 - ✅ [Docker MCP Registry contribution](https://github.com/docker/mcp-registry/pull/66) - **MERGED** 🎉
-- ✅ Docker volume mounting limitation solutions
-- ✅ Utility scripts for local PDF downloads  
-- ✅ Comprehensive Docker compatibility guides
+- ✅ Full Docker Desktop MCP Toolkit integration
+- ✅ Production-ready Docker deployment with volume mounting
+- ✅ Comprehensive documentation and guides
 - ✅ All original ArXiv MCP server functionality
 
 ---
@@ -55,8 +55,7 @@ The ArXiv MCP Server provides a bridge between AI assistants and arXiv's researc
 - 📋 **Paper Listing**: View all downloaded papers
 - 🗃️ **Local Storage**: Papers are saved locally for faster access
 - 📝 **Prompts**: A Set of Research Prompts
-- 🐳 **Docker Compatible**: Includes solutions for Docker MCP Toolkit limitations
-- 🛠️ **Utility Scripts**: Local PDF download tools for seamless workflow
+- 🐳 **Docker Ready**: Official Docker MCP Registry integration with volume mounting
 
 ## 🚀 Quick Start
 
@@ -133,47 +132,32 @@ For Development:
 }
 ```
 
-## 🐳 Docker Volume Mounting Issue & Solution
+## 🐳 Docker Integration
 
-**Important Note for Docker Users**: The Docker MCP Toolkit doesn't implement volume mounting yet, which means downloaded papers inside containers aren't accessible on your host machine.
+**Great News!** The ArXiv MCP Server is now officially available in the Docker MCP Registry with full volume mounting support! 🎉
 
-**Solution**: We provide utility scripts in the [`scripts/`](scripts/) directory that solve this limitation by downloading PDFs directly to your local filesystem using the URLs returned by the MCP server.
+### Using with Docker Desktop MCP Toolkit
 
-### Quick Fix for Docker Users
+1. **Install from Docker Registry**: Available directly through Docker Desktop's MCP Toolkit
+2. **Automatic Volume Mounting**: Downloaded papers are automatically accessible on your host machine
+3. **No Configuration Required**: Works out of the box with proper volume mounting
 
-1. **Download paper via MCP** (returns content + PDF URL):
-   ```bash
-   # This works but files aren't accessible on host
-   mcp download-paper 2507.06000v1
-   ```
+### Additional Features
 
-2. **Use our utility script** to get the PDF locally:
-   ```bash
-   # Copy the pdf_uri from the MCP response
-   python scripts/download_pdf.py https://arxiv.org/pdf/2507.06000v1.pdf
-   ```
+The server includes comprehensive research analysis prompts and full paper content access, making it perfect for academic research workflows.
 
-**See [`scripts/README.md`](scripts/README.md)** for complete documentation on:
-- Configuration options
-- Environment variables
-- Batch operations
-- Troubleshooting
+### 🏆 Technical Achievement: Contributing to Docker MCP Ecosystem
 
-This workaround ensures you get both the paper content (via MCP) and the PDF files (on your local filesystem) until volume mounting is implemented.
+**The Journey**: During the Docker MCP Registry contribution process, we enhanced the ArXiv MCP Server with production-ready Docker deployment capabilities and comprehensive tooling.
 
-### 🏆 Technical Achievement: Solving Docker MCP Ecosystem Limitations
-
-**The Challenge**: During the Docker MCP Registry contribution process, we discovered that Docker MCP Toolkit doesn't implement volume mounting despite YAML configuration support. This affected not just ArXiv, but the entire MCP ecosystem.
-
-**Our Solution**: 
-- **Enhanced Server Response**: Modified download responses to include full content directly
-- **Universal Utility Scripts**: Created local PDF download tools with flexible configuration
+**Our Contributions**: 
+- **Production Docker Configuration**: Proper volume mounting and environment variable handling
 - **Comprehensive Documentation**: Guides helping the entire MCP community
 - **Ecosystem Impact**: Solutions work with any LLM supporting MCP protocol
 
-**Community Benefit**: These solutions help thousands of developers using Docker MCP Toolkit, not just ArXiv users. The workarounds ensure seamless research workflows regardless of Docker limitations.
+**Community Impact**: The ArXiv MCP Server is now available to thousands of researchers, academics, and developers worldwide through Docker's official registry, enabling seamless academic research workflows.
 
-**Real-World Testing**: Successfully analyzed papers including:
+**Real-World Success**: Successfully tested with papers including:
 - FR3E Framework (ByteDance): Entropy-based exploration for LLM reasoning
 - Cognitive Networks: DQN optimization for energy harvesting systems
 
