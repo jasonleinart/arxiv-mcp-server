@@ -7,11 +7,11 @@
 [![PyPI Version](https://img.shields.io/pypi/v/arxiv-mcp-server.svg)](https://pypi.org/project/arxiv-mcp-server/)
 
 # ArXiv MCP Server
-## Enhanced Fork with Docker Registry Contribution & Volume Mounting Solutions
+## Enhanced Fork with Official Docker Registry Integration
 
 > 🔍 Enable AI assistants to search and access arXiv papers through a simple MCP interface.
 > 
-> 🐳 **NEW**: Includes Docker MCP Toolkit compatibility solutions and utility scripts
+> 🐳 **NEW**: Now officially available in Docker's MCP Registry with full integration
 
 **This enhanced fork includes**:
 - ✅ [Docker MCP Registry contribution](https://github.com/docker/mcp-registry/pull/66) - **MERGED** 🎉
