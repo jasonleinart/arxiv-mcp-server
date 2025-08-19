@@ -11,11 +11,12 @@ settings = Settings()
 
 list_tool = types.Tool(
     name="list_papers",
-    description="List all existing papers available as resources",
+    description="List all previously downloaded and converted papers that are available in local storage for immediate reading and analysis. This tool shows you what papers you already have access to without needing to download them again. Each paper in the list includes metadata like title, authors, abstract, and direct links. Use this tool to see your paper library, check if a specific paper is already downloaded, or browse previously acquired research papers before downloading new ones.",
     inputSchema={
         "type": "object",
         "properties": {},
         "required": [],
+        "additionalProperties": False
     },
 )
 

@@ -32,18 +32,19 @@ class ConversionStatus:
 
 download_tool = types.Tool(
     name="download_paper",
-    description="Download a paper and create a resource for it",
+    description="Download and convert an arXiv paper to readable markdown format for analysis and reading. This tool fetches the PDF from arXiv, converts it to markdown using advanced text extraction, and stores it locally for immediate access. Use this tool when you need to read, analyze, or work with the full text content of a specific paper. The conversion process extracts text, preserves formatting, and handles mathematical equations. Returns the full paper content directly upon successful completion.",
     inputSchema={
         "type": "object",
         "properties": {
             "paper_id": {
                 "type": "string",
-                "description": "The arXiv ID of the paper to download",
+                "description": "The arXiv identifier of the paper to download (e.g., '2301.07041', '1706.03762', 'cs.AI/0301001'). This can be found in search results or arXiv URLs. The paper must exist on arXiv.",
+                "pattern": "^(\\d{4}\\.\\d{4,5}(v\\d+)?|[a-z-]+(\\.[A-Z]{2})?/\\d{7}(v\\d+)?)$"
             },
             "check_status": {
                 "type": "boolean",
-                "description": "If true, only check conversion status without downloading",
-                "default": False,
+                "description": "Set to true to only check the status of an ongoing or completed conversion without starting a new download. Use this to monitor long-running conversions or verify if a paper is already available.",
+                "default": False
             },
         },
         "required": ["paper_id"],

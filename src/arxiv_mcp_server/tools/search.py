@@ -12,15 +12,34 @@ settings = Settings()
 
 search_tool = types.Tool(
     name="search_papers",
-    description="Search for papers on arXiv with advanced filtering",
+    description="Search for academic research papers on arXiv.org using advanced filtering capabilities. This tool allows you to find papers by keywords, authors, categories, and date ranges. Use this when you need to discover relevant research papers on a specific topic, find papers by a particular author, or explore recent publications in a field. The search automatically enhances plain text queries for better relevance and supports arXiv's field-specific search syntax.",
     inputSchema={
         "type": "object",
         "properties": {
-            "query": {"type": "string"},
-            "max_results": {"type": "integer"},
-            "date_from": {"type": "string"},
-            "date_to": {"type": "string"},
-            "categories": {"type": "array", "items": {"type": "string"}},
+            "query": {
+                "type": "string",
+                "description": "Search terms for finding papers. Can be plain text (e.g., 'transformer architecture'), quoted phrases (e.g., '\"attention mechanism\"'), or arXiv field syntax (e.g., 'ti:transformer' for title search). The tool automatically optimizes simple queries for better results."
+            },
+            "max_results": {
+                "type": "integer",
+                "description": "Maximum number of papers to return (default: 10, maximum: 100). Use smaller numbers for quick overviews, larger numbers for comprehensive searches.",
+                "default": 10,
+                "minimum": 1,
+                "maximum": 100
+            },
+            "date_from": {
+                "type": "string",
+                "description": "Start date for paper publication filtering in ISO format (e.g., '2023-01-01' or '2023-06-15T10:30:00Z'). Only papers published on or after this date will be included."
+            },
+            "date_to": {
+                "type": "string",
+                "description": "End date for paper publication filtering in ISO format (e.g., '2024-12-31' or '2024-06-15T10:30:00Z'). Only papers published on or before this date will be included."
+            },
+            "categories": {
+                "type": "array",
+                "items": {"type": "string"},
+                "description": "Filter papers by arXiv subject categories (e.g., ['cs.AI', 'cs.LG'] for AI and Machine Learning, ['math.CO', 'cs.DM'] for combinatorics and discrete math). Common categories include: cs.AI (Artificial Intelligence), cs.LG (Machine Learning), cs.CL (Computation and Language), cs.CV (Computer Vision), physics.* (Physics), math.* (Mathematics), stat.* (Statistics)."
+            },
         },
         "required": ["query"],
     },

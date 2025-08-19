@@ -10,16 +10,18 @@ settings = Settings()
 
 read_tool = types.Tool(
     name="read_paper",
-    description="Read the full content of a stored paper in markdown format",
+    description="Read the full text content of a previously downloaded and converted research paper in clean markdown format. This tool retrieves the complete paper content including abstract, introduction, methodology, results, conclusions, and references. The content is formatted for easy reading and analysis, with preserved mathematical equations and structured sections. Use this tool when you need to access the full text of a paper for detailed study, quotation, analysis, or research. The paper must have been previously downloaded using the download_paper tool.",
     inputSchema={
         "type": "object",
         "properties": {
             "paper_id": {
                 "type": "string",
-                "description": "The arXiv ID of the paper to read",
+                "description": "The arXiv identifier of the paper to read (e.g., '2301.07041', '1706.03762'). This must be a paper that has been previously downloaded and converted to markdown format. Use list_papers to see available papers.",
+                "pattern": "^(\\d{4}\\.\\d{4,5}(v\\d+)?|[a-z-]+(\\.[A-Z]{2})?/\\d{7}(v\\d+)?)$"
             }
         },
         "required": ["paper_id"],
+        "additionalProperties": False
     },
 )
 
