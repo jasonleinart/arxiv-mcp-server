@@ -142,9 +142,146 @@ For Development:
 2. **Automatic Volume Mounting**: Downloaded papers are automatically accessible on your host machine
 3. **No Configuration Required**: Works out of the box with proper volume mounting
 
+### Docker MCP Gateway Support
+
+Perfect for local AI models through the Docker MCP Gateway:
+
+- **Local LLM Integration**: Works seamlessly with locally-hosted models (Llama, Mistral, etc.)
+- **Enhanced Tool Descriptions**: Optimized for local models with detailed guidance
+- **Volume Persistence**: Papers remain available across container restarts
+- **Multi-Model Support**: Same server works with different AI models simultaneously
+
 ### Additional Features
 
 The server includes comprehensive research analysis prompts and full paper content access, making it perfect for academic research workflows.
+
+## 🤖 Local Model Usage Guide
+
+### Designed for Local AI Models
+
+This MCP server has been specifically enhanced for use with local AI models that need clear, detailed guidance:
+
+#### Why Local Models Need Better Documentation
+- **Smaller context windows**: Need concise but complete instructions
+- **Less sophisticated reasoning**: Require explicit workflow guidance
+- **Limited training data**: May not understand implicit tool relationships
+
+#### Our Enhancements for Local Models
+- **Detailed tool descriptions**: Each tool explains when and why to use it
+- **Clear parameter guidance**: Examples and validation patterns for inputs
+- **Workflow documentation**: Step-by-step research scenarios
+- **Error context**: Helpful error messages that guide next steps
+
+### Best Practices for Local Model Users
+
+#### 1. Start with Workflow Understanding
+Before using tools, help your local model understand the research workflow:
+```
+"I want to research transformer architectures. Let me first search for papers, then download interesting ones, and finally read them in detail."
+```
+
+#### 2. Use Explicit Tool Descriptions
+Reference the tool purposes when asking your model to use them:
+```
+"Use the search_papers tool to find recent papers about transformers from 2024, limiting results to 10 papers in the AI and Machine Learning categories."
+```
+
+#### 3. Check Your Library First
+Always list existing papers before downloading new ones:
+```
+"First check what papers I already have using list_papers, then search for new papers on this topic."
+```
+
+#### 4. Follow Sequential Workflows
+Guide your model through logical sequences:
+1. Search → 2. Download → 3. List (verify) → 4. Read → 5. Analyze
+
+### Common ArXiv Categories for Local Models
+To help local models choose appropriate categories:
+
+| Category | Description | Common Use Cases |
+|----------|-------------|------------------|
+| `cs.AI` | Artificial Intelligence | General AI research, reasoning, planning |
+| `cs.LG` | Machine Learning | Neural networks, deep learning, training |
+| `cs.CL` | Computation and Language | NLP, language models, text processing |
+| `cs.CV` | Computer Vision | Image processing, visual recognition |
+| `cs.RO` | Robotics | Autonomous systems, control theory |
+| `stat.ML` | Machine Learning (Statistics) | Statistical learning theory, Bayesian methods |
+| `math.OC` | Optimization and Control | Mathematical optimization, control systems |
+
+### Effective Search Query Patterns
+
+#### Topic-Based Searches
+```python
+# Good for exploring research areas
+"transformer attention mechanisms"
+"reinforcement learning robotics"
+"graph neural networks"
+"computer vision object detection"
+```
+
+#### Author-Based Searches
+```python
+# Use arXiv field syntax for precise author searches
+"au:\"Hinton, Geoffrey\""
+"au:\"LeCun, Yann\" OR au:\"Bengio, Yoshua\""
+"au:OpenAI OR au:Anthropic"
+```
+
+#### Title-Specific Searches
+```python
+# When you know part of a paper title
+"ti:\"Attention Is All You Need\""
+"ti:BERT OR ti:GPT"
+"ti:\"Neural Machine Translation\""
+```
+
+#### Combined Field Searches
+```python
+# Mix different search fields for precision
+"ti:transformer AND au:Vaswani"
+"abs:\"few-shot learning\" AND cat:cs.LG"
+"all:\"large language model\" AND ti:reasoning"
+```
+
+#### Date-Constrained Searches
+Essential for finding recent work:
+```python
+# Recent papers only
+{
+    "query": "large language model safety",
+    "date_from": "2024-01-01",
+    "max_results": 15
+}
+
+# Papers from specific time period
+{
+    "query": "transformer architecture",
+    "date_from": "2017-01-01", 
+    "date_to": "2019-12-31",
+    "max_results": 20
+}
+```
+
+### Troubleshooting for Local Models
+
+#### Tool Selection Issues
+If your local model uses wrong tools:
+- Be explicit about which tool to use and why
+- Reference the tool descriptions in your prompts
+- Provide the expected workflow sequence
+
+#### Parameter Format Problems
+If tool calls fail:
+- Use the exact examples from this documentation
+- Check arXiv ID format: `YYMM.NNNNN` (e.g., `2401.12345`)
+- Verify date formats: `YYYY-MM-DD` (e.g., `2024-01-15`)
+
+#### Workflow Confusion
+If your model skips steps:
+- Explicitly list the workflow steps in your prompt
+- Ask the model to confirm each step before proceeding
+- Use the scenario examples as templates
 
 ### 🏆 Technical Achievement: Contributing to Docker MCP Ecosystem
 
@@ -163,43 +300,133 @@ The server includes comprehensive research analysis prompts and full paper conte
 
 ## 💡 Available Tools
 
-The server provides four main tools:
+The server provides four main tools designed to work together in research workflows:
 
-### 1. Paper Search
-Search for papers with optional filters:
+### 1. Paper Search (`search_papers`)
+🔍 **Purpose**: Find relevant research papers by topic, author, or category
 
+**When to use**: Starting research, finding recent papers, exploring a field
 ```python
+# Basic search
 result = await call_tool("search_papers", {
-    "query": "transformer architecture",
-    "max_results": 10,
+    "query": "transformer architecture"
+})
+
+# Advanced search with filters
+result = await call_tool("search_papers", {
+    "query": "attention mechanism neural networks",
+    "max_results": 20,
     "date_from": "2023-01-01",
-    "categories": ["cs.AI", "cs.LG"]
+    "date_to": "2024-12-31",
+    "categories": ["cs.AI", "cs.LG", "cs.CL"]
+})
+
+# Search by author
+result = await call_tool("search_papers", {
+    "query": "au:\"Vaswani, A\"",
+    "max_results": 10
 })
 ```
 
-### 2. Paper Download
-Download a paper by its arXiv ID:
+### 2. Paper Download (`download_paper`)
+📥 **Purpose**: Download and convert papers to readable markdown format
 
+**When to use**: After finding interesting papers, before reading full content
 ```python
+# Download a specific paper
 result = await call_tool("download_paper", {
-    "paper_id": "2401.12345"
+    "paper_id": "1706.03762"  # "Attention Is All You Need"
+})
+
+# Check download status
+result = await call_tool("download_paper", {
+    "paper_id": "1706.03762",
+    "check_status": true
 })
 ```
 
-### 3. List Papers
-View all downloaded papers:
+### 3. List Papers (`list_papers`)
+📋 **Purpose**: View your local paper library
 
+**When to use**: Check what papers you have, avoid re-downloading, browse collection
 ```python
+# See all downloaded papers
 result = await call_tool("list_papers", {})
 ```
 
-### 4. Read Paper
-Access the content of a downloaded paper:
+### 4. Read Paper (`read_paper`)
+📖 **Purpose**: Access full text content of downloaded papers
 
+**When to use**: Deep analysis, quotation, detailed study of methodology/results
 ```python
+# Read full paper content
 result = await call_tool("read_paper", {
-    "paper_id": "2401.12345"
+    "paper_id": "1706.03762"
 })
+```
+
+## 🔄 Research Workflows
+
+### Complete Research Workflow
+Here's how the tools work together in real research scenarios:
+
+#### Scenario 1: Exploring a New Research Area
+```python
+# Step 1: Search for recent papers in the field
+search_result = await call_tool("search_papers", {
+    "query": "large language model reasoning",
+    "max_results": 15,
+    "date_from": "2024-01-01",
+    "categories": ["cs.AI", "cs.CL"]
+})
+
+# Step 2: Download promising papers
+await call_tool("download_paper", {"paper_id": "2401.12345"})
+await call_tool("download_paper", {"paper_id": "2402.67890"})
+
+# Step 3: List your collection to confirm downloads
+library = await call_tool("list_papers", {})
+
+# Step 4: Read papers for detailed analysis
+paper_content = await call_tool("read_paper", {"paper_id": "2401.12345"})
+```
+
+#### Scenario 2: Following Up on Specific Authors
+```python
+# Find papers by specific researchers
+result = await call_tool("search_papers", {
+    "query": "au:\"Anthropic\" OR au:\"OpenAI\"",
+    "max_results": 10,
+    "date_from": "2023-06-01"
+})
+
+# Download the most relevant papers
+for paper in result['papers'][:3]:
+    await call_tool("download_paper", {"paper_id": paper['id']})
+```
+
+#### Scenario 3: Building a Literature Review
+```python
+# Search multiple related topics
+topics = [
+    "transformer interpretability",
+    "attention visualization",
+    "neural network explainability"
+]
+
+for topic in topics:
+    results = await call_tool("search_papers", {
+        "query": topic,
+        "max_results": 8,
+        "date_from": "2022-01-01"
+    })
+    
+    # Download top papers from each topic
+    for paper in results['papers'][:2]:
+        await call_tool("download_paper", {"paper_id": paper['id']})
+
+# Review your complete collection
+library = await call_tool("list_papers", {})
 ```
 
 ## 📝 Research Prompts
