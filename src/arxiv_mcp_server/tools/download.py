@@ -195,45 +195,24 @@ async def handle_download(arguments: Dict[str, Any]) -> List[types.TextContent]:
         status = conversion_statuses[paper_id]
         status.status = "converting"
 
-        # Convert PDF to markdown and wait for completion
-        await asyncio.to_thread(convert_pdf_to_markdown, paper_id, pdf_path)
+        # Start conversion in background task and return immediately
+        asyncio.create_task(asyncio.to_thread(convert_pdf_to_markdown, paper_id, pdf_path))
         
-        # Check if conversion was successful
-        status = conversion_statuses[paper_id]
-        if status.status == "success":
-            # Read the converted content to return it directly
-            md_path = get_paper_path(paper_id, ".md")
-            content = md_path.read_text(encoding="utf-8")
-            
-            return [
-                types.TextContent(
-                    type="text",
-                    text=json.dumps(
-                        {
-                            "status": "success",
-                            "message": "Paper downloaded and converted successfully",
-                            "resource_uri": f"file://{get_paper_path(paper_id, '.md')}",
-                            "pdf_uri": f"https://arxiv.org/pdf/{paper_id}.pdf",
-                            "content": content,
-                            "started_at": status.started_at.isoformat(),
-                            "completed_at": status.completed_at.isoformat(),
-                        }
-                    ),
-                )
-            ]
-        else:
-            return [
-                types.TextContent(
-                    type="text",
-                    text=json.dumps(
-                        {
-                            "status": "error",
-                            "message": f"Conversion failed: {status.error}",
-                            "started_at": status.started_at.isoformat(),
-                        }
-                    ),
-                )
-            ]
+        # Return status indicating conversion has started
+        return [
+            types.TextContent(
+                type="text",
+                text=json.dumps(
+                    {
+                        "status": "converting",
+                        "message": "Paper download completed, conversion started in background. Use check_status=true to monitor progress.",
+                        "resource_uri": f"file://{get_paper_path(paper_id, '.md')}",
+                        "pdf_uri": f"https://arxiv.org/pdf/{paper_id}.pdf",
+                        "started_at": status.started_at.isoformat(),
+                    }
+                ),
+            )
+        ]
 
     except StopIteration:
         return [
