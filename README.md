@@ -147,7 +147,7 @@ For Development:
 Perfect for local AI models through the Docker MCP Gateway:
 
 - **Local LLM Integration**: Works seamlessly with locally-hosted models (Llama, Mistral, etc.)
-- **Enhanced Tool Descriptions**: Optimized for local models with detailed guidance
+- **Enhanced Tool Descriptions**: Detailed tool descriptions help local models understand when and how to use each tool
 - **Volume Persistence**: Papers remain available across container restarts
 - **Multi-Model Support**: Same server works with different AI models simultaneously
 
@@ -155,133 +155,6 @@ Perfect for local AI models through the Docker MCP Gateway:
 
 The server includes comprehensive research analysis prompts and full paper content access, making it perfect for academic research workflows.
 
-## 🤖 Local Model Usage Guide
-
-### Designed for Local AI Models
-
-This MCP server has been specifically enhanced for use with local AI models that need clear, detailed guidance:
-
-#### Why Local Models Need Better Documentation
-- **Smaller context windows**: Need concise but complete instructions
-- **Less sophisticated reasoning**: Require explicit workflow guidance
-- **Limited training data**: May not understand implicit tool relationships
-
-#### Our Enhancements for Local Models
-- **Detailed tool descriptions**: Each tool explains when and why to use it
-- **Clear parameter guidance**: Examples and validation patterns for inputs
-- **Workflow documentation**: Step-by-step research scenarios
-- **Error context**: Helpful error messages that guide next steps
-
-### Best Practices for Local Model Users
-
-#### 1. Start with Workflow Understanding
-Before using tools, help your local model understand the research workflow:
-```
-"I want to research transformer architectures. Let me first search for papers, then download interesting ones, and finally read them in detail."
-```
-
-#### 2. Use Explicit Tool Descriptions
-Reference the tool purposes when asking your model to use them:
-```
-"Use the search_papers tool to find recent papers about transformers from 2024, limiting results to 10 papers in the AI and Machine Learning categories."
-```
-
-#### 3. Check Your Library First
-Always list existing papers before downloading new ones:
-```
-"First check what papers I already have using list_papers, then search for new papers on this topic."
-```
-
-#### 4. Follow Sequential Workflows
-Guide your model through logical sequences:
-1. Search → 2. Download → 3. List (verify) → 4. Read → 5. Analyze
-
-### Common ArXiv Categories for Local Models
-To help local models choose appropriate categories:
-
-| Category | Description | Common Use Cases |
-|----------|-------------|------------------|
-| `cs.AI` | Artificial Intelligence | General AI research, reasoning, planning |
-| `cs.LG` | Machine Learning | Neural networks, deep learning, training |
-| `cs.CL` | Computation and Language | NLP, language models, text processing |
-| `cs.CV` | Computer Vision | Image processing, visual recognition |
-| `cs.RO` | Robotics | Autonomous systems, control theory |
-| `stat.ML` | Machine Learning (Statistics) | Statistical learning theory, Bayesian methods |
-| `math.OC` | Optimization and Control | Mathematical optimization, control systems |
-
-### Effective Search Query Patterns
-
-#### Topic-Based Searches
-```python
-# Good for exploring research areas
-"transformer attention mechanisms"
-"reinforcement learning robotics"
-"graph neural networks"
-"computer vision object detection"
-```
-
-#### Author-Based Searches
-```python
-# Use arXiv field syntax for precise author searches
-"au:\"Hinton, Geoffrey\""
-"au:\"LeCun, Yann\" OR au:\"Bengio, Yoshua\""
-"au:OpenAI OR au:Anthropic"
-```
-
-#### Title-Specific Searches
-```python
-# When you know part of a paper title
-"ti:\"Attention Is All You Need\""
-"ti:BERT OR ti:GPT"
-"ti:\"Neural Machine Translation\""
-```
-
-#### Combined Field Searches
-```python
-# Mix different search fields for precision
-"ti:transformer AND au:Vaswani"
-"abs:\"few-shot learning\" AND cat:cs.LG"
-"all:\"large language model\" AND ti:reasoning"
-```
-
-#### Date-Constrained Searches
-Essential for finding recent work:
-```python
-# Recent papers only
-{
-    "query": "large language model safety",
-    "date_from": "2024-01-01",
-    "max_results": 15
-}
-
-# Papers from specific time period
-{
-    "query": "transformer architecture",
-    "date_from": "2017-01-01", 
-    "date_to": "2019-12-31",
-    "max_results": 20
-}
-```
-
-### Troubleshooting for Local Models
-
-#### Tool Selection Issues
-If your local model uses wrong tools:
-- Be explicit about which tool to use and why
-- Reference the tool descriptions in your prompts
-- Provide the expected workflow sequence
-
-#### Parameter Format Problems
-If tool calls fail:
-- Use the exact examples from this documentation
-- Check arXiv ID format: `YYMM.NNNNN` (e.g., `2401.12345`)
-- Verify date formats: `YYYY-MM-DD` (e.g., `2024-01-15`)
-
-#### Workflow Confusion
-If your model skips steps:
-- Explicitly list the workflow steps in your prompt
-- Ask the model to confirm each step before proceeding
-- Use the scenario examples as templates
 
 ### 🏆 Technical Achievement: Contributing to Docker MCP Ecosystem
 
@@ -461,6 +334,32 @@ Configure through environment variables:
 | Variable | Purpose | Default |
 |----------|---------|---------|
 | `ARXIV_STORAGE_PATH` | Paper storage location | ~/.arxiv-mcp-server/papers |
+
+## 📖 Advanced Usage Reference
+
+### Common ArXiv Categories
+| Category | Description | Use Cases |
+|----------|-------------|-----------|
+| `cs.AI` | Artificial Intelligence | General AI research, reasoning, planning |
+| `cs.LG` | Machine Learning | Neural networks, deep learning, training |
+| `cs.CL` | Computation and Language | NLP, language models, text processing |
+| `cs.CV` | Computer Vision | Image processing, visual recognition |
+| `cs.RO` | Robotics | Autonomous systems, control theory |
+| `stat.ML` | Machine Learning (Statistics) | Statistical learning theory, methods |
+
+### Search Query Examples
+
+**Topic searches**: `"transformer architecture"`, `"reinforcement learning"`
+**Author searches**: `"au:\"Hinton, Geoffrey\""`, `"au:OpenAI OR au:Anthropic"`
+**Title searches**: `"ti:\"Attention Is All You Need\""`, `"ti:BERT OR ti:GPT"`
+**Combined searches**: `"ti:transformer AND au:Vaswani"`, `"abs:\"few-shot learning\" AND cat:cs.LG"`
+
+### Local Model Best Practices
+
+- **Use explicit workflows**: Guide your model through Search → Download → List → Read → Analyze
+- **Reference tool purposes**: Mention why you're using each tool in your prompts
+- **Check library first**: Always use `list_papers` before downloading to avoid duplicates
+- **Be specific with parameters**: Use the exact formats shown in tool examples
 
 ## 🧪 Testing
 
