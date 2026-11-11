@@ -1,6 +1,7 @@
 """List functionality for the arXiv MCP server."""
 
 import json
+import logging
 from pathlib import Path
 import arxiv
 from typing import Dict, Any, List, Optional
@@ -33,6 +34,13 @@ async def handle_list_papers(
     try:
         papers = list_papers()
 
+        # Empty libraries have no IDs to send to arXiv's metadata API.
+        if not papers:
+            return [types.TextContent(
+                type="text",
+                text=json.dumps({"total_papers": 0, "papers": []}),
+            )]
+
         client = arxiv.Client()
 
         results = client.results(arxiv.Search(id_list=papers))
@@ -56,4 +64,5 @@ async def handle_list_papers(
         ]
 
     except Exception as e:
+        logging.getLogger(__name__).exception("Listing stored papers failed: %s", e)  # noqa: TRY401
         return [types.TextContent(type="text", text=f"Error: {str(e)}")]
